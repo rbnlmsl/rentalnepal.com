@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -34,3 +35,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+=======
+# rentalnepal.com
+RentalNepal.com is a modern web application built using **Next.js**, **TypeScript**, and **Tailwind CSS**. It's designed to be the leading platform for finding rental properties in Nepal. Specifically "Made for renters," the site allows users to easily search through thousands of property listings.
+>>>>>>> 9f2f6c1cf6261b4166fb15c1bab9111ae91b5954
