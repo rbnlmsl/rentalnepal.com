@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // Note: PostGIS extension must be enabled in the database for geospatial queries
+  // Run: CREATE EXTENSION postgis; in your PostgreSQL database
+}
+
+// Property type enum
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  STUDIO
+  ROOM
+  TOWNHOUSE
+  VILLA
+  LAND
+  COMMERCIAL
+  OTHER
+}
+
+// Property status enum
+enum PropertyStatus {
+  AVAILABLE
+  RENTED
+  PENDING
+  MAINTENANCE
+  INACTIVE
+}
+
+// Price frequency enum
+enum PriceFrequency {
+  PW // Per week
+  PM // Per month
+}
+
+// Property model
+model Property {
+  id             String         @id @default(uuid())
+  landlordId     String         // Foreign key to Users table (will be implemented later)
+  title          String
+  description    String?        @db.Text
+  addressLine1   String
+  addressLine2   String?
+  city           String
+  province       String
+  postcode       String
+  country        String         @default("Nepal")
+  
+  // Geospatial data
+  latitude       Float
+  longitude      Float
+  // Note: Actual PostGIS column 'location' will be added via raw SQL migration
+  // CREATE INDEX idx_property_location ON "Property" USING GIST (location);
+  // After creating the table, run:
+  // ALTER TABLE "Property" ADD COLUMN location geography(Point, 4326);
+  // UPDATE "Property" SET location = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326)::geography;
+
+  // Property details
+  propertyType   PropertyType
+  rentAmount     Decimal        @db.Decimal(10, 2)
+  depositAmount  Decimal?       @db.Decimal(10, 2)
+  priceFrequency PriceFrequency @default(PM)
+  bedrooms       Int
+  bathrooms      Int
+  areaSqft       Int?
+  
+  // Amenities as an array
+  amenities      String[]       // e.g., ["parking", "pet-friendly", "gym"]
+  
+  // Availability and status
+  availabilityDate DateTime
+  status         PropertyStatus @default(AVAILABLE)
+  
+  // Media
+  images         String[]       // Array of image URLs
+  
+  // Timestamps
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  // Indexes for efficient filtering
+  @@index([city])
+  @@index([propertyType])
+  @@index([bedrooms])
+  @@index([rentAmount])
+  @@index([status])
+  @@index([availabilityDate])
+  // Note: Geospatial index will be created via raw SQL as mentioned above
+}
